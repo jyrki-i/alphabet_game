@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="description" content="WSD 2018, Group Work, Alphabet Game">
+    <meta name="author" content="Jyrki Iivainen">
+    <title>Aakkospeli</title>
+    <link rel="stylesheet" href="alphabet_game.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+</head>
+<body>
+    <script>
+        console.log("<body>");
+    </script>
+    <!-- Alphabet -->
+    <div class="grid-container">
+        <span id="1" class="grid-item">A</span>
+        <span id="2" class="grid-item">B</span>
+        <span id="3" class="grid-item">C</span>
+        <span id="4" class="grid-item">D</span>
+        <span id="5" class="grid-item">E</span>
+        <span id="6" class="grid-item">F</span>
+        <span id="7" class="grid-item">G</span>
+        <span id="8" class="grid-item">H</span>
+        <span id="9" class="grid-item">I</span>
+        <span id="10" class="grid-item">J</span>
+        <span id="11" class="grid-item">K</span>
+        <span id="12" class="grid-item">L</span>
+        <span id="13" class="grid-item">M</span>
+        <span id="14" class="grid-item">N</span>
+        <span id="15" class="grid-item">O</span>
+        <span id="16" class="grid-item">P</span>
+        <span id="17" class="grid-item">Q</span>
+        <span id="18" class="grid-item">R</span>
+        <span id="19" class="grid-item">S</span>
+        <span id="20" class="grid-item">T</span>
+        <span id="21" class="grid-item">U</span>
+        <span id="22" class="grid-item">V</span>
+        <span id="23" class="grid-item">W</span>
+        <span id="24" class="grid-item">X</span>
+        <span id="25" class="grid-item">Y</span>
+        <span id="26" class="grid-item">Z</span>
+        <span id="27" class="grid-item">Å</span>
+        <span id="28" class="grid-item">Ä</span>
+        <span id="29" class="grid-item">Ö</span>
+    </div>
+    <!-- Feedback to player -->
+    <p id="help-text">Klikkaa jotain kirjainta</p>
+    <div id="points-frame">
+        <span class="points">Oikein: </span>
+        <span id="correct" class="points">0</span>
+        <span class="points"> - Väärin: </span>
+        <span id="wrong" class="points">0</span>
+        <span class="points"> - Pisteet: </span>
+        <span id="points" class="points">0</span>
+    </div>
+    <hr>
+    <!-- Game store interface -->
+    <button id="button-score" type="button" class="button">Tulos</button>
+    <button id="button-save" type="button" class="button">Tallenna</button>
+    <button id="button-load" type="button" class="button">Lataa</button>
+    <!-- Game sounds -->
+    <audio id="this-is-sound">
+        <source src="audio/this_is.wav" type="audio/wav">
+        Selaimesi ei tue audio elementtiä.
+    </audio>
+    <audio id="current-letter-sound">
+        <source src="audio/A.wav" type="audio/wav">
+        Selaimesi ei tue audio elementtiä.
+    </audio>
+    <audio id="where-is-sound">
+        <source src="audio/where_is.wav" type="audio/wav">
+        Selaimesi ei tue audio elementtiä.
+    </audio>
+    <audio id="next-letter-sound">
+        <source src="audio/B.wav" type="audio/wav">
+        Selaimesi ei tue audio elementtiä.
+    </audio>
+    <audio id="success-sound">
+        <source src="audio/success.mp3" type="audio/mp3">
+        Selaimesi ei tue audio elementtiä.
+    </audio>
+    <audio id="failure-sound">
+        <source src="audio/failure.mp3" type="audio/mp3">
+        Selaimesi ei tue audio elementtiä.
+    </audio>
+    
+    <script src="alphabet_game.js">
+    <script>
+        console.log("</body>");
+    </script>
+</body>
+</html>

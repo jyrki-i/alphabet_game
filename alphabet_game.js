@@ -1,0 +1,207 @@
+﻿/*
+
+Description:  WSD 2018, Group Work, Alphabet Game
+
+Genre: Educational, Rating: 3
+
+Author: Jyrki Iivainen
+
+*/
+// Game data
+var id_current_letter = 0;
+var id_next_letter = 0;
+var previous_letter = "";
+var next_letter = "";
+var correct = 0;
+var wrong = 0;
+var points = 0;
+
+// References to audio elements
+var this_is_sound;
+var where_is_sound;
+var current_letter_sound;
+var next_letter_sound;
+var success_sound;
+var failure_sound;
+
+//------------------------------------------------------------------------------
+// Returns a JSON object to be sent to the game store.
+function get_save_data()
+{
+    "use strict";
+    var data = {
+        "id_current_letter": id_current_letter,
+        "id_next_letter": id_next_letter,
+        "previous_letter": previous_letter,
+        "next_letter": next_letter,
+        "correct": correct,
+        "wrong": wrong,
+        "points": points
+   };
+   return data;
+}
+
+//------------------------------------------------------------------------------
+// Assigns given game data.
+function load_save_data(data)
+{
+    "use strict";
+    id_current_letter = data.id_current_letter;
+    id_next_letter = data.id_next_letter;
+    previous_letter = data.previous_letter;
+    next_letter = data.next_letter;
+    correct = data.correct;
+    wrong = data.wrong;
+    points = data.points;
+}
+
+//------------------------------------------------------------------------------
+// Run scripts when document object is ready.
+$(document).ready(function() {
+    "use strict";
+    
+    document.body.style.cursor = "hand";  
+
+    // Set up objects referencing audio elements
+    this_is_sound = $("#this-is-sound").get(0);
+    where_is_sound = $("#where-is-sound").get(0);
+    current_letter_sound = $("#current-letter-sound").get(0);
+    next_letter_sound = $("#next-letter-sound").get(0);
+    success_sound = $("#success-sound").get(0);
+    failure_sound = $("#failure-sound").get(0);
+    success_sound.volume = 0.2;
+    failure_sound.volume = 0.1;
+    
+    // Sequence audio plays
+    this_is_sound.addEventListener("ended", function() {
+        current_letter_sound.play();
+    });
+    current_letter_sound.addEventListener("ended", function() {
+        where_is_sound.play();
+    });
+    where_is_sound.addEventListener("ended", function() {
+        next_letter_sound.play();
+    });
+    
+    //------------------------------------------------------------------------------
+    // Handle letter clicking
+    $(".grid-item").click(function(event) {
+        var selected_letter = event.target.innerText;
+        var selector = "";
+        var color = "LawnGreen";
+        
+        if (previous_letter === selected_letter) {
+            return;
+        }
+        if (next_letter === "") {
+            // first letter, do nothing
+        }
+        else if (selected_letter !== next_letter) {
+            failure_sound.play();
+            points = points - 1;
+            if (points < 0) {
+                points = 0;
+            }
+            wrong = wrong + 1;
+            color = "Red";
+        }
+        else {
+            success_sound.play();
+            points = points + 1;
+            correct = correct + 1;
+            color = "LawnGreen";
+        }
+        $("#correct").html(correct);
+        $("#wrong").html(wrong);
+        $("#points").html(points);
+
+        previous_letter = selected_letter;
+
+        selector = "#" + id_current_letter;
+        $(selector).css("background-color", "DodgerBlue");
+        id_current_letter = event.target.id;
+        selector = "#" + id_current_letter;
+        $(selector).css("background-color", color);
+        
+        while (1) {
+            id_next_letter = Math.floor(Math.random() * 29) + 1; // returns a number between 1 and 29 
+            if (id_next_letter !== id_current_letter) {
+                break;
+            }
+        }
+        
+        selector = "#" + id_next_letter;
+        next_letter = $(selector).html();
+        
+        $("#help-text").html("Tämä on " + selected_letter + ", missä on " +  next_letter + "?");
+        
+        console.log("src", "audio/" + selected_letter + ".wav")
+        current_letter_sound.setAttribute("src", "audio/" + selected_letter + ".wav");
+        next_letter_sound.setAttribute("src", "audio/" + next_letter + ".wav");
+        
+        this_is_sound.play();
+    });
+    
+    //----------------------------------------------------------------------------
+    // Handle score button push.
+    $("#button-score").click(function(event) {
+        // sent from the game to the service, informing of a new score submission
+        var msg = {};
+        msg.messageType = "SCORE";
+        msg.score =  points;
+        window.parent.postMessage(msg, "*");
+        correct = 0;
+        wrong = 0;
+        points = 0;
+    });
+    
+    //----------------------------------------------------------------------------
+    // Handle save button push.
+    $("#button-save").click(function(event) {
+        var data = get_save_data();
+        // Sent from the game to the service, the service should now store the 
+        // sent game state
+        var msg = {};
+        msg.messageType = "SAVE";
+        msg.gameState =  data;
+        window.parent.postMessage(msg, "*");
+    });
+    
+    //----------------------------------------------------------------------------
+    // Handle load button push.
+    $("#button-load").click(function(event) {
+        //var data = load_save_data(data);
+        // Sent from the game to the service, requesting that a game state 
+        // (if there is one saved) is sent from the service to the game
+        var msg = {};
+        msg.messageType = "LOAD_REQUEST";
+        window.parent.postMessage(msg, "*");
+    });
+    
+    //----------------------------------------------------------------------------
+    // Respond to messages sent by the game store.
+    $(window).on("message", function(evt) {
+        //Note that messages from all origins are accepted
+        var msg = evt.originalEvent;
+        var type = msg.messageType;
+        
+        if (type === "LOAD") { 
+            // game state to load
+            var data = msg.gameState;
+            load_save_data(data);
+            var msg2 = {};
+            msg2.messageType = "SETTING";
+            msg2.options = {
+                "width": 800, // pixels
+                "height": 600 // pixels
+            };
+            window.parent.postMessage(msg2, "*");
+        }
+        else if (type === "ERROR") {
+            // information to be relayed to the user on what went wrong
+            var info  = msg.info;
+            window.alert(info);
+        }
+    });
+    
+});
