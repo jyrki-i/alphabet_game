@@ -24,6 +24,23 @@ var next_letter_sound;
 var success_sound;
 var failure_sound;
 
+// Frame size
+var frame_width = 800;
+var frame_heigth = 600;
+
+//------------------------------------------------------------------------------
+// Send a SETTING message to parent window.
+function send_setting_message()
+{
+    var msg = {};
+    msg.messageType = "SETTING";
+    msg.options = {
+        "width": frame_width, // pixels
+        "height": frame_heigth // pixels
+    };
+    window.parent.postMessage(msg, "*");
+}
+
 //------------------------------------------------------------------------------
 // Returns a JSON object to be sent to the game store.
 function get_save_data()
@@ -189,13 +206,7 @@ $(document).ready(function() {
             // game state to load
             var data = msg.gameState;
             load_save_data(data);
-            var msg2 = {};
-            msg2.messageType = "SETTING";
-            msg2.options = {
-                "width": 800, // pixels
-                "height": 600 // pixels
-            };
-            window.parent.postMessage(msg2, "*");
+            send_setting_message();
         }
         else if (type === "ERROR") {
             // information to be relayed to the user on what went wrong
@@ -204,4 +215,7 @@ $(document).ready(function() {
         }
     });
     
+    //----------------------------------------------------------------------------
+    // Finished initial load. Notify Game Store.
+    send_setting_message();
 });
