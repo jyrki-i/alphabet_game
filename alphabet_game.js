@@ -25,8 +25,8 @@ var success_sound;
 var failure_sound;
 
 // Frame size
-var frame_width = 800;
-var frame_heigth = 600;
+var frame_width = 480;
+var frame_heigth = 360;
 
 //------------------------------------------------------------------------------
 // Send a SETTING message to parent window.
