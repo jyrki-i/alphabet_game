@@ -201,11 +201,13 @@ $(document).ready(function() {
     window.addEventListener("message", function(evt) {
         //Note that messages from all origins are accepted
         var msg = evt.originalEvent;
-        var type = msg.messageType;
+        //var type = msg.messageType;
+        var type = evt.data.messageType;
 
         if (type === "LOAD") {
             // game state to load
-            var data = msg.gameState;
+            //var data = msg.gameState;
+            var data = evt.data.gameState;
             load_save_data(data);
             send_setting_message();
         }
