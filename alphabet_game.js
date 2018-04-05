@@ -76,8 +76,8 @@ function load_save_data(data)
 // Run scripts when document object is ready.
 $(document).ready(function() {
     "use strict";
-    
-    document.body.style.cursor = "hand";  
+
+    document.body.style.cursor = "hand";
 
     // Set up objects referencing audio elements
     this_is_sound = $("#this-is-sound").get(0);
@@ -88,7 +88,7 @@ $(document).ready(function() {
     failure_sound = $("#failure-sound").get(0);
     success_sound.volume = 0.2;
     failure_sound.volume = 0.1;
-    
+
     // Sequence audio plays
     this_is_sound.addEventListener("ended", function() {
         current_letter_sound.play();
@@ -99,14 +99,14 @@ $(document).ready(function() {
     where_is_sound.addEventListener("ended", function() {
         next_letter_sound.play();
     });
-    
+
     //------------------------------------------------------------------------------
     // Handle letter clicking
     $(".grid-item").click(function(event) {
         var selected_letter = event.target.innerText;
         var selector = "";
         var color = "LawnGreen";
-        
+
         if (previous_letter === selected_letter) {
             return;
         }
@@ -139,26 +139,26 @@ $(document).ready(function() {
         id_current_letter = event.target.id;
         selector = "#" + id_current_letter;
         $(selector).css("background-color", color);
-        
+
         while (1) {
-            id_next_letter = Math.floor(Math.random() * 29) + 1; // returns a number between 1 and 29 
+            id_next_letter = Math.floor(Math.random() * 29) + 1; // returns a number between 1 and 29
             if (id_next_letter !== id_current_letter) {
                 break;
             }
         }
-        
+
         selector = "#" + id_next_letter;
         next_letter = $(selector).html();
-        
+
         $("#help-text").html("Tämä on " + selected_letter + ", missä on " +  next_letter + "?");
-        
+
         console.log("src", "audio/" + selected_letter + ".wav")
         current_letter_sound.setAttribute("src", "audio/" + selected_letter + ".wav");
         next_letter_sound.setAttribute("src", "audio/" + next_letter + ".wav");
-        
+
         this_is_sound.play();
     });
-    
+
     //----------------------------------------------------------------------------
     // Handle score button push.
     $("#button-score").click(function(event) {
@@ -171,38 +171,39 @@ $(document).ready(function() {
         wrong = 0;
         points = 0;
     });
-    
+
     //----------------------------------------------------------------------------
     // Handle save button push.
     $("#button-save").click(function(event) {
         var data = get_save_data();
-        // Sent from the game to the service, the service should now store the 
+        // Sent from the game to the service, the service should now store the
         // sent game state
         var msg = {};
         msg.messageType = "SAVE";
         msg.gameState =  data;
         window.parent.postMessage(msg, "*");
     });
-    
+
     //----------------------------------------------------------------------------
     // Handle load button push.
     $("#button-load").click(function(event) {
         //var data = load_save_data(data);
-        // Sent from the game to the service, requesting that a game state 
+        // Sent from the game to the service, requesting that a game state
         // (if there is one saved) is sent from the service to the game
         var msg = {};
         msg.messageType = "LOAD_REQUEST";
         window.parent.postMessage(msg, "*");
     });
-    
+
     //----------------------------------------------------------------------------
     // Respond to messages sent by the game store.
-    $(window).on("message", function(evt) {
+    //$(window).on("message", function(evt) {
+    window.addEventListener("message", function(evt) {
         //Note that messages from all origins are accepted
         var msg = evt.originalEvent;
         var type = msg.messageType;
-        
-        if (type === "LOAD") { 
+
+        if (type === "LOAD") {
             // game state to load
             var data = msg.gameState;
             load_save_data(data);
@@ -214,7 +215,7 @@ $(document).ready(function() {
             window.alert(info);
         }
     });
-    
+
     //----------------------------------------------------------------------------
     // Finished initial load. Notify Game Store.
     send_setting_message();
