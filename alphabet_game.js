@@ -58,9 +58,9 @@ function get_save_data()
         "previous_letter": previous_letter,
         "selected_letter": selected_letter,
         "next_letter": next_letter,
-        "correct": correct,
-        "wrong": wrong,
-        "points": points
+        "correct": parseInt(correct),
+        "wrong": parseInt(wrong),
+        "points": parseInt(points)
    };
    return data;
 }
@@ -96,6 +96,7 @@ function load_save_data(data)
 //------------------------------------------------------------------------------
 function update_points()
 {
+    //TODO: Don't update element contents correctly after game state load.
     $("#correct").text(correct);
     $("#wrong").text(wrong);
     $("#points").text(points);
