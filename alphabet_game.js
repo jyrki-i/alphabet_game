@@ -109,7 +109,7 @@ function update_next_letter()
     
     while (1) {
         id_next_letter = Math.floor(Math.random() * 29) + 1; // returns a number between 1 and 29
-        if (id_next_letter != id_current_letter) {
+        if (parseInt(id_next_letter) != parseInt(id_current_letter)) {
             break;
         }
     }
