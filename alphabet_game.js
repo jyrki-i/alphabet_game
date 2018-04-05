@@ -204,33 +204,14 @@ $(document).ready(function() {
 
     //----------------------------------------------------------------------------
     // Respond to messages sent by the game store.
-    $(window).on("message", function(evt) {
-        //Note that messages from all origins are accepted
-        var msg = evt.originalEvent;
-        var type = msg.messageType;
-
-        if (type === "LOAD") {
-            // game state to load
-            var data = msg.gameState;
-            load_save_data(data);
-            send_setting_message();
-        }
-        else if (type === "ERROR") {
-            // information to be relayed to the user on what went wrong
-            var info  = msg.info;
-            window.alert(info);
-        }
-    });
-    //----------------------------------------------------------------------------
-    // Respond to messages sent by the game store.
-    //~ window.addEventListener("message", function(evt) {
+    //~ $(window).on("message", function(evt) {
         //~ //Note that messages from all origins are accepted
         //~ var msg = evt.originalEvent;
-        //~ var type = evt.data.messageType;
+        //~ var type = msg.messageType;
 
         //~ if (type === "LOAD") {
             //~ // game state to load
-            //~ var data = evt.data.gameState;
+            //~ var data = msg.gameState;
             //~ load_save_data(data);
             //~ send_setting_message();
         //~ }
@@ -240,6 +221,26 @@ $(document).ready(function() {
             //~ window.alert(info);
         //~ }
     //~ });
+
+//----------------------------------------------------------------------------
+    // Respond to messages sent by the game store.
+    window.addEventListener("message", function(evt) {
+        //Note that messages from all origins are accepted
+        var msg = evt.originalEvent;
+        var type = evt.data.messageType;
+
+        if (type === "LOAD") {
+            // game state to load
+            var data = evt.data.gameState;
+            load_save_data(data);
+            send_setting_message();
+        }
+        else if (type === "ERROR") {
+            // information to be relayed to the user on what went wrong
+            var info  = msg.info;
+            window.alert(info);
+        }
+    });
 
     //----------------------------------------------------------------------------
     // Finished initial load. Notify Game Store.
