@@ -63,7 +63,7 @@ function get_save_data()
 function load_save_data(data)
 {
     "use strict";
-    console.log(Alphabet game: load_save_data);
+    console.log("Alphabet game: load_save_data");
     id_current_letter = data.id_current_letter;
     id_next_letter = data.id_next_letter;
     previous_letter = data.previous_letter;
