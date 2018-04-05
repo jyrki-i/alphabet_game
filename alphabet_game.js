@@ -63,6 +63,7 @@ function get_save_data()
 function load_save_data(data)
 {
     "use strict";
+    console.log(Alphabet game: load_save_data);
     id_current_letter = data.id_current_letter;
     id_next_letter = data.id_next_letter;
     previous_letter = data.previous_letter;
@@ -70,6 +71,12 @@ function load_save_data(data)
     correct = data.correct;
     wrong = data.wrong;
     points = data.points;
+
+    var selector = "#" + id_current_letter;
+    $(selector).css("background-color", color);
+    $("#correct").html(correct);
+    $("#wrong").html(wrong);
+    $("#points").html(points);
 }
 
 //------------------------------------------------------------------------------
@@ -197,17 +204,14 @@ $(document).ready(function() {
 
     //----------------------------------------------------------------------------
     // Respond to messages sent by the game store.
-    //$(window).on("message", function(evt) {
-    window.addEventListener("message", function(evt) {
+    $(window).on("message", function(evt) {
         //Note that messages from all origins are accepted
         var msg = evt.originalEvent;
-        //var type = msg.messageType;
-        var type = evt.data.messageType;
+        var type = msg.messageType;
 
         if (type === "LOAD") {
             // game state to load
-            //var data = msg.gameState;
-            var data = evt.data.gameState;
+            var data = msg.gameState;
             load_save_data(data);
             send_setting_message();
         }
@@ -217,6 +221,25 @@ $(document).ready(function() {
             window.alert(info);
         }
     });
+    //----------------------------------------------------------------------------
+    // Respond to messages sent by the game store.
+    //~ window.addEventListener("message", function(evt) {
+        //~ //Note that messages from all origins are accepted
+        //~ var msg = evt.originalEvent;
+        //~ var type = evt.data.messageType;
+
+        //~ if (type === "LOAD") {
+            //~ // game state to load
+            //~ var data = evt.data.gameState;
+            //~ load_save_data(data);
+            //~ send_setting_message();
+        //~ }
+        //~ else if (type === "ERROR") {
+            //~ // information to be relayed to the user on what went wrong
+            //~ var info  = msg.info;
+            //~ window.alert(info);
+        //~ }
+    //~ });
 
     //----------------------------------------------------------------------------
     // Finished initial load. Notify Game Store.
