@@ -88,6 +88,10 @@ function load_save_data(data)
     selector = "#" + id_current_letter;
     $(selector).css("background-color", color_ok);
     
+    $("#correct").replaceWith('<span id="correct" class="points">0</span>');
+    $("#wrong").replaceWith('<span id="wrong" class="points">0</span>');
+    $("#points").replaceWith('<span id="points" class="points">0</span>');
+    
     update_points();
     
     update_next_letter();
