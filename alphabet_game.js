@@ -28,6 +28,11 @@ var failure_sound;
 var frame_width = 480;
 var frame_heigth = 360;
 
+// card colors
+var color_normal = "DodgerBlue";
+var color_ok = "LawnGreen";
+var color_fail = "Red";
+
 //------------------------------------------------------------------------------
 // Send a SETTING message to parent window.
 function send_setting_message()
@@ -64,11 +69,10 @@ function load_save_data(data)
 {
     "use strict";
     var selector = "";
-    var color = "LawnGreen";
     
     console.log("Alphabet game: load_save_data");
     selector = "#" + id_current_letter;
-    $(selector).css("background-color", "DodgerBlue");
+    $(selector).css("background-color", color_normal);
     
     id_current_letter = data.id_current_letter;
     id_next_letter = data.id_next_letter;
@@ -79,10 +83,44 @@ function load_save_data(data)
     points = data.points;
 
     selector = "#" + id_current_letter;
-    $(selector).css("background-color", color);
+    $(selector).css("background-color", color_ok);
+    
+    update_points();
+    
+    update_next_letter();
+}
+
+//------------------------------------------------------------------------------
+function update_points()
+{
     $("#correct").html(correct);
     $("#wrong").html(wrong);
     $("#points").html(points);
+}
+
+//------------------------------------------------------------------------------
+function update_next_letter()
+{
+    "use strict";
+    var selector = "";
+    
+    while (1) {
+        id_next_letter = Math.floor(Math.random() * 29) + 1; // returns a number between 1 and 29
+        if (id_next_letter !== id_current_letter) {
+            break;
+        }
+    }
+
+    selector = "#" + id_next_letter;
+    next_letter = $(selector).html();
+
+    $("#help-text").html("Tämä on " + selected_letter + ", missä on " +  next_letter + "?");
+
+    console.log("src", "audio/" + selected_letter + ".wav")
+    current_letter_sound.setAttribute("src", "audio/" + selected_letter + ".wav");
+    next_letter_sound.setAttribute("src", "audio/" + next_letter + ".wav");
+
+    this_is_sound.play();
 }
 
 //------------------------------------------------------------------------------
@@ -133,43 +171,26 @@ $(document).ready(function() {
                 points = 0;
             }
             wrong = wrong + 1;
-            color = "Red";
+            color = color_fail;
         }
         else {
             success_sound.play();
             points = points + 1;
             correct = correct + 1;
-            color = "LawnGreen";
+            color = color_ok;
         }
-        $("#correct").html(correct);
-        $("#wrong").html(wrong);
-        $("#points").html(points);
+        
+        update_points();
 
         previous_letter = selected_letter;
 
         selector = "#" + id_current_letter;
-        $(selector).css("background-color", "DodgerBlue");
+        $(selector).css("background-color", color_normal);
         id_current_letter = event.target.id;
         selector = "#" + id_current_letter;
         $(selector).css("background-color", color);
 
-        while (1) {
-            id_next_letter = Math.floor(Math.random() * 29) + 1; // returns a number between 1 and 29
-            if (id_next_letter !== id_current_letter) {
-                break;
-            }
-        }
-
-        selector = "#" + id_next_letter;
-        next_letter = $(selector).html();
-
-        $("#help-text").html("Tämä on " + selected_letter + ", missä on " +  next_letter + "?");
-
-        console.log("src", "audio/" + selected_letter + ".wav")
-        current_letter_sound.setAttribute("src", "audio/" + selected_letter + ".wav");
-        next_letter_sound.setAttribute("src", "audio/" + next_letter + ".wav");
-
-        this_is_sound.play();
+        update_next_letter();
     });
 
     //----------------------------------------------------------------------------
