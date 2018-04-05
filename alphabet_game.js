@@ -97,9 +97,9 @@ function load_save_data(data)
 function update_points()
 {
     //TODO: Don't update element contents correctly after game state load.
-    $("#correct").text(correct);
-    $("#wrong").text(wrong);
-    $("#points").text(points);
+    $("#correct").text(parseInt(correct));
+    $("#wrong").text(parseInt(wrong));
+    $("#points").text(parseInt(points));
 }
 
 //------------------------------------------------------------------------------
