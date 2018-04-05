@@ -63,6 +63,9 @@ function get_save_data()
 function load_save_data(data)
 {
     "use strict";
+    var selector = "";
+    var color = "LawnGreen";
+    
     console.log("Alphabet game: load_save_data");
     id_current_letter = data.id_current_letter;
     id_next_letter = data.id_next_letter;
@@ -72,7 +75,7 @@ function load_save_data(data)
     wrong = data.wrong;
     points = data.points;
 
-    var selector = "#" + id_current_letter;
+    selector = "#" + id_current_letter;
     $(selector).css("background-color", color);
     $("#correct").html(correct);
     $("#wrong").html(wrong);
