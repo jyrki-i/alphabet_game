@@ -96,9 +96,9 @@ function load_save_data(data)
 //------------------------------------------------------------------------------
 function update_points()
 {
-    $("#correct").val(correct);
-    $("#wrong").val(wrong);
-    $("#points").val(points);
+    $("#correct").text(correct);
+    $("#wrong").text(wrong);
+    $("#points").text(points);
 }
 
 //------------------------------------------------------------------------------
