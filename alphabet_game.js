@@ -11,6 +11,7 @@ Author: Jyrki Iivainen
 var id_current_letter = 0;
 var id_next_letter = 0;
 var previous_letter = "";
+var selected_letter = "";
 var next_letter = "";
 var correct = 0;
 var wrong = 0;
@@ -55,6 +56,7 @@ function get_save_data()
         "id_current_letter": id_current_letter,
         "id_next_letter": id_next_letter,
         "previous_letter": previous_letter,
+        "selected_letter": selected_letter,
         "next_letter": next_letter,
         "correct": correct,
         "wrong": wrong,
@@ -77,6 +79,7 @@ function load_save_data(data)
     id_current_letter = data.id_current_letter;
     id_next_letter = data.id_next_letter;
     previous_letter = data.previous_letter;
+    selected_letter = data.selected_letter;
     next_letter = data.next_letter;
     correct = data.correct;
     wrong = data.wrong;
@@ -154,10 +157,11 @@ $(document).ready(function() {
     //------------------------------------------------------------------------------
     // Handle letter clicking
     $(".grid-item").click(function(event) {
-        var selected_letter = event.target.innerText;
         var selector = "";
-        var color = "LawnGreen";
+        var color = color_normal;
 
+        selected_letter = event.target.innerText;
+        
         if (previous_letter === selected_letter) {
             return;
         }
