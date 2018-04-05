@@ -81,9 +81,9 @@ function load_save_data(data)
     previous_letter = data.previous_letter;
     selected_letter = data.selected_letter;
     next_letter = data.next_letter;
-    correct = data.correct;
-    wrong = data.wrong;
-    points = data.points;
+    correct = parseInt(data.correct);
+    wrong = parseInt(data.wrong);
+    points = parseInt(data.points);
 
     selector = "#" + id_current_letter;
     $(selector).css("background-color", color_ok);
@@ -96,15 +96,9 @@ function load_save_data(data)
 //------------------------------------------------------------------------------
 function update_points()
 {
-    //TODO: Don't update element contents correctly after game state load.
     $("#correct").text(parseInt(correct));
     $("#wrong").text(parseInt(wrong));
     $("#points").text(parseInt(points));
-
-    // Does not work either.
-    //~ document.getElementById("correct").innerText = correct;
-    //~ document.getElementById("wrong").innerText = wrong;
-    //~ document.getElementById("points").innerText = points;
 }
 
 //------------------------------------------------------------------------------
@@ -176,17 +170,17 @@ $(document).ready(function() {
         }
         else if (selected_letter !== next_letter) {
             failure_sound.play();
-            points = points - 1;
+            points = parseInt(points) - 1;
             if (points < 0) {
                 points = 0;
             }
-            wrong = wrong + 1;
+            wrong = parseInt(wrong) + 1;
             color = color_fail;
         }
         else {
             success_sound.play();
-            points = points + 1;
-            correct = correct + 1;
+            points = parseInt(points) + 1;
+            correct = parseInt(correct)+ 1;
             color = color_ok;
         }
         
