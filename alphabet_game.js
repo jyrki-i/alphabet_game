@@ -81,9 +81,9 @@ function load_save_data(data)
     previous_letter = data.previous_letter;
     selected_letter = data.selected_letter;
     next_letter = data.next_letter;
-    correct = data.correct;
-    wrong = data.wrong;
-    points = data.points;
+    correct = ParseInt(data.correct);
+    wrong = ParseInt(data.wrong);
+    points = ParseInt(data.points);
 
     selector = "#" + id_current_letter;
     $(selector).css("background-color", color_ok);
@@ -176,17 +176,17 @@ $(document).ready(function() {
         }
         else if (selected_letter !== next_letter) {
             failure_sound.play();
-            points = points - 1;
+            points = ParseInt(points) - 1;
             if (points < 0) {
                 points = 0;
             }
-            wrong = wrong + 1;
+            wrong = ParseInt(wrong) + 1;
             color = color_fail;
         }
         else {
             success_sound.play();
-            points = points + 1;
-            correct = correct + 1;
+            points = ParseInt(points) + 1;
+            correct = ParseInt(correct)+ 1;
             color = color_ok;
         }
         
