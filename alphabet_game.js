@@ -88,9 +88,9 @@ function load_save_data(data)
     selector = "#" + id_current_letter;
     $(selector).css("background-color", color_ok);
     
-    $("#correct").html("");
-    $("#wrong").html("");
-    $("#points").html("");
+    $("#correct").empty();
+    $("#wrong").empty();
+    $("#points").empty();
     
     update_points();
     
