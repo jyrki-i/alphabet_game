@@ -26,8 +26,8 @@ var success_sound;
 var failure_sound;
 
 // Frame size
-var frame_width = 480;
-var frame_heigth = 360;
+var frame_width = 800;
+var frame_heigth = 600;
 
 // card colors
 var color_normal = "DodgerBlue";
