@@ -166,7 +166,8 @@ $(document).ready(function() {
             return;
         }
         if (next_letter === "") {
-            // first letter, do nothing
+            // first letter
+            color = color_ok;
         }
         else if (selected_letter !== next_letter) {
             failure_sound.play();
@@ -205,9 +206,6 @@ $(document).ready(function() {
         msg.messageType = "SCORE";
         msg.score =  points;
         window.parent.postMessage(msg, "*");
-        correct = 0;
-        wrong = 0;
-        points = 0;
     });
 
     //----------------------------------------------------------------------------
